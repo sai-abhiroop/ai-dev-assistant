@@ -40,7 +40,7 @@ function Login({ onSuccess }) {
     if (window.google) {
 
       window.google.accounts.id.initialize({
-        client_id: "616107965871-r4ad6942vg243tk4eh97g3l180cuki80.apps.googleusercontent.com",
+        client_id: "process.env.REACT_APP_GOOGLE_CLIENT_ID",
         callback: handleGoogleLogin
       });
 
