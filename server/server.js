@@ -15,11 +15,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const JWT_SECRET = "secret123";
+const JWT_SECRET = process.env.Jwt_Secret;
 const API_KEY = process.env.GEMINI_API_KEY;
 
 // Google Client
-const googleClient = new OAuth2Client("616107965871-r4ad6942vg243tk4eh97g3l180cuki80.apps.googleusercontent.com");
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 /* ---------------- MongoDB ---------------- */
 
@@ -311,8 +311,8 @@ app.post("/api/google-login", async (req, res) => {
   const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "ravellasaiabhiroop@gmail.com",
-    pass: "ywhm cmdu wxsc waek" // NOT your real password
+    user: process.env.my_email,
+    pass: process.env.my_pass // NOT your real password
   }
 });
 /* ---------------- SEND OTP ---------------- */
@@ -326,20 +326,18 @@ app.post("/api/send-otp", async (req, res) => {
 
  try {
   await transporter.sendMail({
-    from: "your_email@gmail.com",
+    from: process.env.my_email,
     to: email,
     subject: "Your OTP Code",
     text: `Your OTP is ${otp}`
   });
 
-  res.json({ message: "OTP sent" });
+  return res.json({ message: "OTP sent" });
 
 } catch (err) {
   console.error("Email error:", err); // 🔥 IMPORTANT
-  res.status(500).json({ error: "Failed to send email" });
+  return res.status(500).json({ error: "Failed to send email" });
 }
-
-  res.json({ message: "OTP sent" });
 });
 /* ---------------- VERIFY OTP ---------------- */
 app.post("/api/verify-otp", (req, res) => {

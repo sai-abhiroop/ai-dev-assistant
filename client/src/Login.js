@@ -4,7 +4,6 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 import "./Login.css";
 
-
 function Login({ onSuccess }) {
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
@@ -40,7 +39,7 @@ function Login({ onSuccess }) {
     if (window.google) {
 
       window.google.accounts.id.initialize({
-        client_id: "process.env.REACT_APP_GOOGLE_CLIENT_ID",
+        client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
         callback: handleGoogleLogin
       });
 
@@ -67,6 +66,14 @@ function Login({ onSuccess }) {
 
       return () => clearInterval(interval);
     }, [timer]);
+
+    useEffect(() => {
+        if (!email) {
+        setOtpSent(false);
+        setOtp("");
+        setTimer(0);
+      }
+    }, [email]);
 
 
   const handleAuth = async () => {
