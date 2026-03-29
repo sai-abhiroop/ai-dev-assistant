@@ -1,0 +1,517 @@
+/* ================= GLOBAL RESET ================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+/* ================= APP LAYOUT ================= */
+
+.app {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* ================= THEMES ================= */
+
+.app.dark {
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+.app.light {
+  background: #f8fafc;
+  color: #111827;
+}
+
+/* ================= SIDEBAR ================= */
+
+.sidebar {
+  width: 260px;
+  padding: 20px;
+  overflow-y: auto;
+  border-right: 1px solid rgba(255,255,255,0.05);
+  transition: width 0.3s ease;
+}
+
+.sidebar.collapsed {
+  width: 60px;
+}
+
+.app.dark .sidebar {
+  background: #020617;
+}
+
+.app.light .sidebar {
+  background: white;
+  border-right: 1px solid #e5e7eb;
+}
+
+/* Sidebar header */
+
+.sidebar-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.history-title {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+/* Collapse button */
+
+.collapse-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.collapse-btn {
+  color: inherit;
+}
+
+/* ================= HISTORY ITEMS ================= */
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+/* hover */
+
+.app.dark .history-item:hover {
+  background: #1e293b;
+}
+
+.app.light .history-item:hover {
+  background: #f1f5f9;
+}
+
+/* delete button hidden */
+
+.delete-btn {
+  opacity: 0;
+  border: none;
+  background: transparent;
+  color: #ef4444;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+/* show delete icon on hover */
+
+.history-item:hover .delete-btn {
+  opacity: 1;
+}
+
+.delete-btn:hover {
+  color: #dc2626;
+}
+
+/* ================= MAIN CONTENT ================= */
+
+.main {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+}
+
+/* ================= HEADER ================= */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 10px;
+  flex-wrap: nowrap;
+}
+
+.header h1 {
+  font-size: 20px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.header button {
+  margin-left: 10px;
+}
+
+/* Theme button */
+
+.theme-btn {
+  padding: 7px 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+/* ================= LANGUAGE SELECT ================= */
+
+.language-select {
+  margin-bottom: 12px;
+  padding: 7px 10px;
+  border-radius: 6px;
+  border: 1px solid #cbd5f5;
+}
+
+/* ================= BUTTON GROUP ================= */
+
+.buttons {
+  margin-top: 15px;
+  flex-wrap: wrap;
+}
+
+/* AI buttons */
+
+.buttons button {
+  padding: 9px 16px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  background: #3b82f6;
+  color: white;
+}
+
+.buttons button:hover {
+  background: #2563eb;
+}
+
+/* Clear button */
+
+.clear-btn {
+  background: #ef4444 !important;
+}
+
+.clear-btn:hover {
+  background: #dc2626 !important;
+}
+
+/* ================= RESPONSE SECTION ================= */
+
+.response {
+  margin-top: 30px;
+  padding: 24px;
+  border-radius: 16px;
+  line-height: 1.7;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+}
+
+.app.dark .response {
+  background: #020617;
+  border: 1px solid #1e293b;
+}
+
+.app.light .response {
+  background: white;
+  border: 1px solid #e5e7eb;
+}
+
+/* ================= RESPONSE HEADER ================= */
+
+.response-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.response-header button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  background: #3b82f6;
+  color: white;
+  cursor: pointer;
+}
+
+.response-header button:hover {
+  background: #2563eb;
+}
+
+/* ================= MARKDOWN CONTENT ================= */
+
+.response h1,
+.response h2,
+.response h3 {
+  margin-top: 18px;
+  font-weight: 600;
+}
+
+.response p {
+  line-height: 1.7;
+}
+
+.response ul {
+  padding-left: 20px;
+}
+
+/* ================= CODE BLOCK ================= */
+
+.response pre {
+  padding: 15px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 13px;
+}
+
+.app.dark .response pre {
+  background: #111827;
+}
+
+.app.light .response pre {
+  background: #f3f4f6;
+}
+
+/* inline code */
+
+.response code {
+  padding: 3px 6px;
+  border-radius: 5px;
+}
+
+.app.dark .response code {
+  background: #1f2937;
+}
+
+.app.light .response code {
+  background: #e5e7eb;
+}
+
+/* ================= MONACO EDITOR ================= */
+
+.monaco-editor,
+.monaco-editor-background {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* ================= CHAT ================= */
+.chat-container{
+  margin-top:20px;
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+.chat-bubble{
+  padding:12px;
+  border-radius:10px;
+  max-width:80%;
+  word-wrap:break-word;
+}
+
+.chat-bubble.user{
+  align-self:flex-end;
+  background:#2563eb;
+  color:white;
+}
+
+.chat-bubble.ai{
+  align-self:flex-start;
+  background:#2b2b2b;
+}
+
+.app.light .chat-bubble.ai{
+  background:#f1f1f1;
+}
+
+/* modal */
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+
+  z-index: 9999;
+}
+
+/* ================= MODAL BOX ================= */
+
+.modal-content {
+
+  width: 90%;
+  max-width: 420px;   /* ✅ Perfect width */
+  min-width: 320px;
+
+  padding: 30px;
+  border-radius: 16px;
+
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+
+  animation: scaleIn 0.25s ease;
+
+}
+
+/* DARK THEME */
+.app.dark .modal-content {
+  background: #020617;
+  border: 1px solid #1e293b;
+  color: white;
+}
+
+/* LIGHT THEME */
+.app.light .modal-content {
+  background: white;
+  border: 1px solid #ddd;
+  color: black;
+}
+
+/* ================= ANIMATION ================= */
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modal-content input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.app.dark .modal-content input {
+  background: #0f172a;
+  color: white;
+  border: 1px solid #1e293b;
+}
+
+.modal-content button {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.modal-content button:hover {
+  background: #1d4ed8;
+}
+
+/* ================= HEADER ACTIONS ================= */
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: nowrap; /* 🔥 prevents going to next line */
+}
+
+.header-actions button {
+  white-space: nowrap;
+}
+
+/* ================= PROFILE ================= */
+
+.profile-section {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.profile-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: 0.2s;
+}
+
+.profile-btn:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+/* ================= DROPDOWN ================= */
+
+.dropdown {
+  position: absolute;
+  top: 42px;
+  right: 0;
+  width: 160px;
+  border-radius: 10px;
+  overflow: hidden;
+  z-index: 999;
+}
+
+/* dark */
+.app.dark .dropdown {
+  background: #020617;
+  border: 1px solid #1e293b;
+}
+
+/* light */
+.app.light .dropdown {
+  background: white;
+  border: 1px solid #ddd;
+}
+
+.dropdown-item {
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.dropdown-item:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255,255,255,0.05);
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.2s;
+}
+
+.icon-btn:hover {
+  background: rgba(255,255,255,0.1);
+}
