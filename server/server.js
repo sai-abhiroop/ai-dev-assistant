@@ -9,13 +9,20 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { OAuth2Client } = require("google-auth-library");
 const otpStore = {};
-
+const PORT = process.env.PORT || 5000;
 const app = express();
+const nodemailer = require("nodemailer");
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    "http://localhost:3000",
+    process.env.CLIENT_URL
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
-const JWT_SECRET = process.env.Jwt_Secret;
+const JWT_SECRET = process.env.JWT_SECRET;
 const API_KEY = process.env.GEMINI_API_KEY;
 
 // Google Client
@@ -45,8 +52,8 @@ async function startServer() {
     snippetsCollection = db.collection("snippets");
     usersCollection = db.collection("users");
 
-    app.listen(5000, () => {
-      console.log("🚀 Server running on http://localhost:5000");
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on ${PORT}`);
     });
 
   } catch (error) {
@@ -62,21 +69,25 @@ console.log("Gemini key loaded:", API_KEY ? "YES" : "NO");
 
 function auth(req, res, next) {
 
-  const token = req.headers.authorization;
+  const authHeader = req.headers.authorization;
 
-  if (!token) {
-    req.user = null; // 👈 allow guest
+  if (!authHeader) {
+    req.user = null;
     return next();
   }
+
+  // 🔥 Extract token correctly
+  const token = authHeader.split(" ")[1];
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
     req.user = decoded;
-    next();
-  } catch {
+  } catch (err) {
+    console.log("JWT ERROR:", err.message);
     req.user = null;
-    next();
   }
+
+  next();
 }
 
 /* ---------------- Root ---------------- */
@@ -152,6 +163,8 @@ ${code}
         createdAt: new Date(),
       });
     }
+    // console.log("Saving snippet for:", req.user);
+    // console.log("REQ USER ID:", req.user.id);
 
     res.json({ result, html });
 
@@ -172,6 +185,7 @@ ${code}
 app.get("/api/history", auth, async (req, res) => {
 
   if (!req.user) {
+    console.log("No user");
     return res.json([]); // 👈 guest = no history
   }
 
@@ -287,7 +301,7 @@ app.post("/api/google-login", async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: email },
+      { id: user._id },
       JWT_SECRET,
       { expiresIn: "7d" }
     );
@@ -306,13 +320,12 @@ app.post("/api/google-login", async (req, res) => {
   }
 
 });
-  const nodemailer = require("nodemailer");
 
   const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: process.env.my_email,
-    pass: process.env.my_pass // NOT your real password
+    user: process.env.MY_EMAIL,
+    pass: process.env.MY_PASS // NOT your real password
   }
 });
 /* ---------------- SEND OTP ---------------- */
@@ -326,7 +339,7 @@ app.post("/api/send-otp", async (req, res) => {
 
  try {
   await transporter.sendMail({
-    from: process.env.my_email,
+    from: process.env.MY_EMAIL,
     to: email,
     subject: "Your OTP Code",
     text: `Your OTP is ${otp}`
