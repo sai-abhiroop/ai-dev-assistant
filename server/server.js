@@ -332,7 +332,7 @@ app.post("/api/send-otp", async (req, res) => {
 
  try {
   await resend.emails.send({
-    from: process.env.MY_EMAIL,
+    from: "onboarding@resend.dev",
     to: email,
     subject: "Your OTP Code",
     text: `Your OTP is ${otp}`
