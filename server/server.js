@@ -11,7 +11,8 @@ const { OAuth2Client } = require("google-auth-library");
 const otpStore = {};
 const PORT = process.env.PORT || 5000;
 const app = express();
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 app.use(cors({
   origin: [
@@ -320,14 +321,6 @@ app.post("/api/google-login", async (req, res) => {
   }
 
 });
-
-  const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.MY_EMAIL,
-    pass: process.env.MY_PASS // NOT your real password
-  }
-});
 /* ---------------- SEND OTP ---------------- */
 app.post("/api/send-otp", async (req, res) => {
 
@@ -338,7 +331,7 @@ app.post("/api/send-otp", async (req, res) => {
   otpStore[email] = otp;
 
  try {
-  await transporter.sendMail({
+  await resend.emails.send({
     from: process.env.MY_EMAIL,
     to: email,
     subject: "Your OTP Code",

@@ -11,6 +11,7 @@ import {
 } from "react-icons/fa";
 import Login from "./Login";
 import { Toaster, toast } from "react-hot-toast";
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 function App() {
 
@@ -34,7 +35,7 @@ function App() {
 
     try {
       const res = await axios.get(
-        "http://localhost:5000/api/history",
+        "api/history",
         {
           headers: { Authorization: `Bearer ${token}` }
         }
@@ -75,7 +76,7 @@ function App() {
       setHtml("");
 
       const res = await axios.post(
-        "http://localhost:5000/api/explain",
+        "/api/explain",
         { code, type },
         {
           headers: token
@@ -127,7 +128,7 @@ function App() {
 
   const deleteSnippet = async (id) => {
     await axios.delete(
-      `http://localhost:5000/api/history/${id}`,
+      `/api/history/${id}`,
       {
         headers: { Authorization: `Bearer ${token}` }
       }

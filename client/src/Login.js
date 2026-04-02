@@ -3,7 +3,7 @@ import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 import "./Login.css";
-
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 function Login({ onSuccess }) {
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
@@ -15,13 +15,12 @@ function Login({ onSuccess }) {
   const [loading, setLoading] = useState(false);
   const [timer, setTimer] = useState(0);
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
   const handleGoogleLogin = async (response) => {
 
     try {
 
       const res = await axios.post(
-        "http://localhost:5000/api/google-login",
+        "/api/google-login",
         { credential: response.credential }
       );
 
@@ -100,12 +99,12 @@ function Login({ onSuccess }) {
         }
 
         await axios.post(
-          "http://localhost:5000/api/signup",
+          "/api/signup",
           { name, email, password }
         );
 
         await axios.post(
-          "http://localhost:5000/api/verify-otp",
+          "/api/verify-otp",
           { email, otp }
         );
 
@@ -114,7 +113,7 @@ function Login({ onSuccess }) {
       } else {
 
         const res = await axios.post(
-          "http://localhost:5000/api/login",
+          "/api/login",
           { email, password }
         );
 
@@ -131,16 +130,19 @@ function Login({ onSuccess }) {
   };
 
   const sendOtp = async () => {
+    console.log("Sending OTP to:", email);
 
   try {
 
-    await axios.post("http://localhost:5000/api/send-otp", { email });
+    await axios.post("/api/send-otp", { email });
+      console.log("Sent OTP to:", email);
 
     toast.success("OTP sent!");
     setOtpSent(true);
     setTimer(30); 
 
-  } catch {
+  } catch(err) {
+     console.log("OTP ERROR:", err);
     toast.error("Failed to send OTP");
   }
 

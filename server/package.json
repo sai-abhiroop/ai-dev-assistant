@@ -20,6 +20,7 @@
     "jsonwebtoken": "^9.0.3",
     "marked": "^17.0.4",
     "mongoose": "^9.2.4",
-    "nodemailer": "^8.0.4"
+    "nodemailer": "^8.0.4",
+    "resend": "^6.10.0"
   }
 }
