@@ -46,10 +46,10 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    loadHistory();
-  }, [token]);
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(() => {
+      if (token) loadHistory();
+    }, [token]);
   // ================= LOGIN SUCCESS =================
   const handleLoginSuccess = (newToken, message) => {
 

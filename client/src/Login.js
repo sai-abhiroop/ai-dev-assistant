@@ -3,6 +3,7 @@ import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 import "./Login.css";
+import React, { useState, useEffect, useCallback } from "react";
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 function Login({ onSuccess }) {
   const [otp, setOtp] = useState("");
@@ -15,23 +16,20 @@ function Login({ onSuccess }) {
   const [loading, setLoading] = useState(false);
   const [timer, setTimer] = useState(0);
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const handleGoogleLogin = async (response) => {
+  
+  const handleGoogleLogin = useCallback(async (response) => {
+  try {
+    const res = await axios.post("/api/google-login", {
+      credential: response.credential
+    });
 
-    try {
+    onSuccess(res.data.token, "Google login successful!");
 
-      const res = await axios.post(
-        "/api/google-login",
-        { credential: response.credential }
-      );
-
-      onSuccess(res.data.token, "Google login successful!");
-
-    } catch (err) {
-      console.error(err);
-      toast.error("Google login failed");
-    }
-
-  };
+  } catch (err) {
+    console.error(err);
+    toast.error("Google login failed");
+  }
+}, [onSuccess]);
   
   useEffect(() => {
 
