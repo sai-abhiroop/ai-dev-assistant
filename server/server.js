@@ -272,12 +272,9 @@ app.post("/api/login", async (req, res) => {
 /* ---------------- GOOGLE LOGIN ---------------- */
 
 app.post("/api/google-login", async (req, res) => {
-
   try {
 
     const { credential } = req.body;
-
-    console.log("Received credential:", credential ? "YES" : "NO");
 
     const ticket = await googleClient.verifyIdToken({
       idToken: credential,
@@ -286,23 +283,23 @@ app.post("/api/google-login", async (req, res) => {
 
     const payload = ticket.getPayload();
 
-    console.log("Google payload:", payload);
-
     const email = payload.email;
     const name = payload.name;
 
     let user = await usersCollection.findOne({ email });
 
     if (!user) {
-      await usersCollection.insertOne({
+      const result = await usersCollection.insertOne({
         name,
         email,
         createdAt: new Date()
       });
+
+      user = { _id: result.insertedId }; // 🔥 FIX
     }
 
     const token = jwt.sign(
-      { id: user._id },
+      { id: user._id.toString() }, // 🔥 FIX
       JWT_SECRET,
       { expiresIn: "7d" }
     );
@@ -310,16 +307,12 @@ app.post("/api/google-login", async (req, res) => {
     res.json({ token });
 
   } catch (err) {
-
-    console.error("🔥 GOOGLE ERROR:", err); // 👈 IMPORTANT
-
+    console.error("🔥 GOOGLE ERROR:", err);
     res.status(500).json({
       error: "Google login failed",
       details: err.message
     });
-
   }
-
 });
 /* ---------------- SEND OTP ---------------- */
 app.post("/api/send-otp", async (req, res) => {
