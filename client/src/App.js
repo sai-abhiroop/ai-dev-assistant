@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
 import { marked } from "marked";
 import Editor from "@monaco-editor/react";
@@ -30,26 +30,25 @@ function App() {
   const responseRef = useRef();
 
   // ================= HISTORY =================
-  const loadHistory = async () => {
-    if (!token) return;
+  const loadHistory = useCallback(async () => {
+  if (!token) return;
 
-    try {
-      const res = await axios.get(
-        "api/history",
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      );
-      setHistory(res.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  try {
+    const res = await axios.get(
+      "/api/history",
+      {
+        headers: { Authorization: `Bearer ${token}` }
+      }
+    );
+    setHistory(res.data);
+  } catch (err) {
+    console.log(err);
+  }
+}, [token]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-    useEffect(() => {
-      if (token) loadHistory();
-    }, [token]);
+  useEffect(() => {
+  loadHistory();
+}, [loadHistory]);
   // ================= LOGIN SUCCESS =================
   const handleLoginSuccess = (newToken, message) => {
 
