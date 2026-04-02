@@ -327,23 +327,28 @@ app.post("/api/send-otp", async (req, res) => {
   const { email } = req.body;
 
   const otp = Math.floor(100000 + Math.random() * 900000);
-
   otpStore[email] = otp;
 
- try {
-  await resend.emails.send({
-    from: "onboarding@resend.dev",
-    to: email,
-    subject: "Your OTP Code",
-    text: `Your OTP is ${otp}`
-  });
+  try {
 
-  return res.json({ message: "OTP sent" });
+    const response = await resend.emails.send({
+      from: "onboarding@resend.dev",
+      to: email,
+      subject: "Your OTP Code",
+      html: `<h2>Your OTP is ${otp}</h2>`
+    });
 
-} catch (err) {
-  console.error("Email error:", err); // 🔥 IMPORTANT
-  return res.status(500).json({ error: "Failed to send email" });
-}
+    console.log("✅ RESEND RESPONSE:", response);
+    console.log("📩 EMAIL SENT TO:", email);
+    console.log("🔑 OTP:", otp);
+
+    return res.json({ message: "OTP sent" });
+
+  } catch (err) {
+    console.error("❌ FULL ERROR:", err);
+    return res.status(500).json({ error: err.message });
+  }
+
 });
 /* ---------------- VERIFY OTP ---------------- */
 app.post("/api/verify-otp", (req, res) => {
