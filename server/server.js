@@ -292,7 +292,7 @@ app.post("/api/google-login", async (req, res) => {
         createdAt: new Date()
       });
 
-      user = { _id: result.insertedId }; // 🔥 FIX
+      user = { _id: result.insertedId, email:email}; // 🔥 FIX
     }
 
     const token = jwt.sign(
