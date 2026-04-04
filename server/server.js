@@ -15,10 +15,7 @@ const { Resend } = require("resend");
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 app.use(cors({
-  origin: [
-    "http://localhost:3000",
-    process.env.CLIENT_URL
-  ],
+  origin: true,
   credentials: true
 }));
 app.use(express.json());
