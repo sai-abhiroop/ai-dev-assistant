@@ -172,6 +172,8 @@ function App() {
     localStorage.removeItem("token");
     setToken(null);
     setHistory([]);
+    setShowProfile(false);
+    setShowDropdown(false);
     toast.success("Logged out");
   };
 
