@@ -193,18 +193,25 @@ function App() {
       {/*PROFILE MODAL */}
       {showProfile && (
           <div className="modal-overlay" onClick={() => setShowProfile(false)}>
-            <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <div className="profile-container">
 
                 <h2>👤 Profile</h2>
 
-                <p><strong>Logged in</strong></p>
-                <p>Token present ✅</p>
+                <div className="profile-item">
+                  <span>📧 Email:</span>
+                  <span>user@gmail.com</span>
+                </div>
+
+                <div className="profile-item">
+                  <span>🔐 Status:</span>
+                  <span>Logged in</span>
+                </div>
 
                 <button onClick={() => setShowProfile(false)}>
-                      Close
-                </button>
+                  Close
+               </button>
 
-              </div>
+            </div>
           </div>
         )}
 
