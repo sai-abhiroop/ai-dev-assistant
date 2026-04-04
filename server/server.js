@@ -257,7 +257,7 @@ app.post("/api/login", async (req, res) => {
   }
 
   const token = jwt.sign(
-    { id: user._id },
+    { id: user._id ,email:user.email},
     JWT_SECRET,
     { expiresIn: "7d" }
   );
@@ -296,7 +296,7 @@ app.post("/api/google-login", async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user._id.toString() }, // 🔥 FIX
+      { id: user._id.toString(),email:user.email }, // 🔥 FIX
       JWT_SECRET,
       { expiresIn: "7d" }
     );

@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.13.6",
     "google-auth-library": "^10.6.2",
+    "jwt-decode": "^4.0.0",
     "marked": "^17.0.4",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",

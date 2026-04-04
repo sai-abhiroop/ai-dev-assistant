@@ -11,6 +11,7 @@ import {
 } from "react-icons/fa";
 import Login from "./Login";
 import { Toaster, toast } from "react-hot-toast";
+import { jwtDecode } from "jwt-decode";
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 function App() {
@@ -22,12 +23,23 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [theme, setTheme] = useState("dark");
   const [sidebarOpen, setSidebarOpen] = useState(true);
-
+  const [userEmail, setUserEmail] = useState("");
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [showLogin, setShowLogin] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const responseRef = useRef();
+
+  useEffect(() => {
+  if (token) {
+    try {
+      const decoded = jwtDecode(token);
+      setUserEmail(decoded.email);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+}, [token]);
 
   // ================= HISTORY =================
   const loadHistory = useCallback(async () => {
@@ -199,7 +211,7 @@ function App() {
 
                 <div className="profile-item">
                   <span>📧 Email:</span>
-                  <span>user@gmail.com</span>
+                  <span>{userEmail}</span>
                 </div>
 
                 <div className="profile-item">
