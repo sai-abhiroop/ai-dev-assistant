@@ -26,7 +26,7 @@ function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [showLogin, setShowLogin] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
-
+  const [showProfile, setShowProfile] = useState(false);
   const responseRef = useRef();
 
   // ================= HISTORY =================
@@ -175,7 +175,7 @@ function App() {
         }}
       />
 
-      {/* MODAL */}
+      {/*LOGIN MODAL */}
       {showLogin && (
         <div className="modal-overlay" onClick={() => setShowLogin(false)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
@@ -189,6 +189,24 @@ function App() {
           </div>
         </div>
       )}
+
+      {/*PROFILE MODAL */}
+      {showProfile && (
+          <div className="modal-overlay" onClick={() => setShowProfile(false)}>
+            <div className="modal" onClick={(e) => e.stopPropagation()}>
+
+                <h2>👤 Profile</h2>
+
+                <p><strong>Logged in</strong></p>
+                <p>Token present ✅</p>
+
+                <button onClick={() => setShowProfile(false)}>
+                      Close
+                </button>
+
+              </div>
+          </div>
+        )}
 
       {/* SIDEBAR */}
       <div className={`sidebar ${sidebarOpen ? "open" : "collapsed"}`}>
@@ -248,8 +266,13 @@ function App() {
 
                 {showDropdown && (
                   <div className="dropdown">
-
-                    <div className="dropdown-item">
+                   <div
+                      className="dropdown-item"
+                      onClick={() => {
+                                      setShowProfile(true);
+                                      setShowDropdown(false);
+                       }}
+                      >
                       👤 Profile
                     </div>
 
