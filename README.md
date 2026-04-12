@@ -20,4 +20,4 @@ An AI-powered coding assistant with authentication, OTP verification, Google log
 - Backend: Render
 
 ## 📸 Demo
-(You will add later)
+https://ai-dev-assistant-one.vercel.app/
